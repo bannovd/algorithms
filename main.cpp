@@ -16,7 +16,11 @@ const std::vector<unsigned long> get_random_vector(std::vector<unsigned long>::s
         vec[i] = i;
     }
     srand(unsigned(time(nullptr)));
-    random_shuffle(vec.begin(), vec.end());
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::shuffle(vec.begin(), vec.end(), g);
     return vec;
 }
 
@@ -81,7 +85,7 @@ int main()
     std::cout << "--\n" << "search_linear (unsorted container) ["<< search_key << "]: ";
     begin = std::chrono::high_resolution_clock::now();
 
-    long search_index = algorithms::search_linear(vec_base, search_key);
+    std::size_t search_index = static_cast<std::size_t>(algorithms::search_linear(vec_base, search_key));
     std::cout << "pos: " << search_index << " value: " << vec_base[search_index] << std::endl;
     end = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() << " nanos" << std::endl;
@@ -90,7 +94,7 @@ int main()
     std::cout << "--\n" << "search_binary (sorted container)  ["<< search_key << "]: ";
 
     begin = std::chrono::high_resolution_clock::now();
-    search_index = algorithms::search_binary(vec_sort_quick, search_key);
+    search_index = static_cast<std::size_t>(algorithms::search_binary(vec_sort_quick, search_key));
     std::cout << "pos: " << search_index << " value: " << vec_sort_quick[search_index] << std::endl;
     end = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() << " nanos" << std::endl;
@@ -99,7 +103,7 @@ int main()
     std::cout << "--\n" << "search_interpolation (sorted container)  ["<< search_key << "]: ";
 
     begin = std::chrono::high_resolution_clock::now();
-    search_index = algorithms::search_interpolation(vec_sort_quick, search_key);
+    search_index = static_cast<std::size_t>(algorithms::search_interpolation(vec_sort_quick, search_key));
     std::cout << "pos: " << search_index << " value: " << vec_sort_quick[search_index] << std::endl;
     end = std::chrono::high_resolution_clock::now();
     std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() << " nanos" << std::endl;
